@@ -1,7 +1,7 @@
 {
-  "name": "@ipikuka/next-mdx-remote",
+  "name": "@ipikuka/mdx",
   "version": "2.0.2",
-  "description": "It is an opinionated wrapper for the serialize function of the `next-mdx-remote` package that written by hashicorp",
+  "description": "It is an opinionated wrapper for `next-mdx-remote-client`",
   "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "type": "module",
@@ -46,7 +46,7 @@
     "next",
     "nextjs",
     "next.js",
-    "next-mdx-remote",
+    "next-mdx-remote-client",
     "remark",
     "rehype"
   ],
@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@ipikuka/plugins": "^1.0.2",
-    "next-mdx-remote": "^5.0.0"
+    "next-mdx-remote-client": "^1.0.6"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^3.0.1",
@@ -87,7 +87,7 @@
     "vfile": "^6.0.1"
   },
   "peerDependencies": {
-    "react": ">=16.x <=18.x",
-    "react-dom": ">=16.x <=18.x"
+    "react": ">= 18.3.0 < 19.0.0",
+    "react-dom": ">= 18.3.0 < 19.0.0"
   }
 }
