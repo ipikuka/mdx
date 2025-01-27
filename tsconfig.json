@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*", "global.d.ts"],
+  "include": ["src/**/*"],
   "exclude": ["src/lib_archive"],
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
@@ -12,7 +12,7 @@
     "strict": true,
     "declaration": true,
     "sourceMap": true,
-    "outDir": "dist/esm",
+    "outDir": "dist",
     "noImplicitReturns": true
   }
 }

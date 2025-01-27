@@ -1,29 +1,13 @@
-import { serialize as serialize_ } from "next-mdx-remote/serialize";
-import { type MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize as serialize_ } from "next-mdx-remote-client/serialize";
+import type {
+  SerializeResult,
+  SerializeProps,
+  SerializeOptions,
+} from "next-mdx-remote-client/serialize";
+
 import { plugins, prepare, type TocItem } from "@ipikuka/plugins";
-import { type CompileOptions } from "@mdx-js/mdx";
-import { type Compatible } from "vfile";
 
-// taken from next-mdx-remote, since it is not exposed
-type SerializeOptions = {
-  /**
-   * Pass-through variables for use in the MDX content
-   */
-  scope?: Record<string, unknown>;
-  /**
-   * These options are passed to the MDX compiler.
-   * See [the MDX docs.](https://github.com/mdx-js/mdx/blob/master/packages/mdx/index.js).
-   */
-  mdxOptions?: Omit<CompileOptions, "outputFormat" | "providerImportSource"> & {
-    useDynamicImport?: boolean;
-  };
-  /**
-   * Indicate whether or not frontmatter should be parsed out of the MDX. Defaults to false
-   */
-  parseFrontmatter?: boolean;
-};
-
-export { type MDXRemoteSerializeResult, type SerializeOptions };
+export type { SerializeResult, SerializeProps, SerializeOptions, TocItem };
 
 /**
  *
@@ -31,30 +15,29 @@ export { type MDXRemoteSerializeResult, type SerializeOptions };
  *
  */
 export async function serialize<
-  TScope extends Record<string, unknown> = Record<string, unknown>,
   TFrontmatter extends Record<string, unknown> = Record<string, unknown>,
->(
-  source: Compatible,
-  { mdxOptions, parseFrontmatter, scope }: SerializeOptions = {},
-): Promise<
-  MDXRemoteSerializeResult<TScope & { toc: TocItem[] }, TFrontmatter>
+  TScope extends Record<string, unknown> = Record<string, unknown>,
+>({
+  source,
+  options,
+}: SerializeProps<TScope>): Promise<
+  SerializeResult<TFrontmatter, TScope & { toc?: TocItem[] }>
 > {
-  const toc: TocItem[] = [];
+  const { mdxOptions, ...rest } = options || {};
 
-  const { format: format_, ...rest } = mdxOptions || {};
+  const format_ = mdxOptions?.format;
   const format = format_ === "md" || format_ === "mdx" ? format_ : "mdx";
   const processedSource = format === "mdx" ? prepare(source) : source;
 
-  return await serialize_<TScope & { toc: TocItem[] }, TFrontmatter>(
-    processedSource,
-    {
-      parseFrontmatter,
-      scope: { ...scope, toc },
+  return await serialize_<TFrontmatter, TScope>({
+    source: processedSource,
+    options: {
       mdxOptions: {
-        format,
-        ...rest,
-        ...plugins({ format, toc }),
+        ...mdxOptions,
+        ...plugins({ format }),
       },
+      vfileDataIntoScope: "toc",
+      ...rest,
     },
-  );
+  });
 }

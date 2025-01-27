@@ -2,21 +2,29 @@
   "name": "@ipikuka/mdx",
   "version": "2.0.2",
   "description": "It is an opinionated wrapper for `next-mdx-remote-client`",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "./dist/csr.js",
+  "types": "./dist/csr.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/esm/index.js",
-    "./serialize": "./dist/esm/serialize.js",
-    "./rsc": "./dist/esm/rsc.js"
+    ".": "./dist/csr.js",
+    "./csr": "./dist/csr.js",
+    "./serialize": "./dist/serialize.js",
+    "./rsc": "./dist/rsc.js",
+    "./utils": "./dist/utils.js"
   },
   "typesVersions": {
     "*": {
+      "csr": [
+        "./dist/csr.d.ts"
+      ],
       "serialize": [
         "./dist/esm/serialize.d.ts"
       ],
       "rsc": [
         "./dist/esm/rsc.d.ts"
+      ],
+      "utils": [
+        "./dist/utils.d.ts"
       ]
     }
   },
@@ -48,7 +56,8 @@
     "next.js",
     "next-mdx-remote-client",
     "remark",
-    "rehype"
+    "rehype",
+    "recma"
   ],
   "author": "ipikuka <talatkuyuk@gmail.com>",
   "license": "MIT",
@@ -64,8 +73,8 @@
     "next-mdx-remote-client": "^1.0.6"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "^3.0.1",
-    "@mdx-js/react": "^3.0.1",
+    "@mdx-js/mdx": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.17.16",
     "@types/react": "^18.3.18",
@@ -79,12 +88,12 @@
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "prettier-2": "npm:prettier@^2.8.8",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rimraf": "^5.0.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3",
-    "vfile": "^6.0.1"
+    "vfile": "^6.0.3"
   },
   "peerDependencies": {
     "react": ">= 18.3.0 < 19.0.0",
