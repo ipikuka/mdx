@@ -1,26 +1,24 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote";
-import { type Compatible } from "vfile";
 
-import { serialize, type SerializeOptions } from "../../src/serialize";
+import { serialize, type SerializeProps } from "../../src/serialize.js";
 
-export async function renderStatic(
-  source: Compatible,
-  {
-    components,
-    scope = {},
-    mdxOptions,
-    parseFrontmatter,
-  }: Partial<SerializeOptions & Pick<MDXRemoteProps, "components">> = {},
-): Promise<string> {
-  const mdxSource = await serialize(source, {
-    mdxOptions,
-    parseFrontmatter,
-    scope,
-  });
+import { MDXClient, type MDXComponents } from "../../src/csr.js";
+
+export async function renderStatic({
+  source,
+  options,
+  components,
+}: {
+  source: SerializeProps["source"];
+  options?: SerializeProps["options"];
+  components?: MDXComponents;
+}): Promise<string> {
+  const mdxSource = await serialize({ source, options });
+
+  if ("error" in mdxSource) throw mdxSource.error;
 
   return ReactDOMServer.renderToStaticMarkup(
-    <MDXRemote {...mdxSource} components={components} />,
+    <MDXClient {...mdxSource} components={components} />,
   );
 }

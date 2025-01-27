@@ -1,11 +1,10 @@
 import * as React from "react";
 import ReactDOMServer from "react-dom/server";
-import { MDXRemote } from "next-mdx-remote";
-import { MDXProvider } from "@mdx-js/react";
 import { VFile } from "vfile";
 import dedent from "dedent";
 
-import { serialize } from "../src/serialize";
+import { MDXClient, MDXProvider, type MDXComponents } from "../src/csr.js";
+import { serialize } from "../src/serialize.js";
 
 import { renderStatic } from "./utils";
 
@@ -18,17 +17,20 @@ import { renderStatic } from "./utils";
 describe("serialize", () => {
   // ******************************************
   test("minimal", async () => {
-    const result = await renderStatic("foo **bar**");
+    const result = await renderStatic({ source: "foo **bar**" });
+
     expect(result).toMatchInlineSnapshot(`"<p>foo <strong>bar</strong></p>"`);
   });
 
   // ******************************************
   test("with component", async () => {
-    const result = await renderStatic('foo <Test name="test" />', {
+    const result = await renderStatic({
+      source: 'foo <Test name="test" />',
       components: {
         Test: ({ name }: { name: string }) => <span>hello {name}</span>,
       },
     });
+
     expect(result).toMatchInlineSnapshot(
       `"<p>foo <span>hello test</span></p>"`,
     );
@@ -36,7 +38,8 @@ describe("serialize", () => {
 
   // ******************************************
   test("flexible paragraphs", async () => {
-    const result = await renderStatic("~> hello");
+    const result = await renderStatic({ source: "~> hello" });
+
     expect(result).toMatchInlineSnapshot(
       `"<p class="flexible-paragraph">hello</p>"`,
     );
@@ -44,14 +47,18 @@ describe("serialize", () => {
 
   // ******************************************
   test("with scope", async () => {
-    const result = await renderStatic("<Test name={bar} />", {
+    const result = await renderStatic({
+      source: "<Test name={bar} />",
       components: {
         Test: ({ name }: { name: string }) => <p>{name}</p>,
       },
-      scope: {
-        bar: "test",
+      options: {
+        scope: {
+          bar: "test",
+        },
       },
     });
+
     expect(result).toMatchInlineSnapshot(`"<p>test</p>"`);
   });
 
@@ -59,20 +66,19 @@ describe("serialize", () => {
   test("with custom provider", async () => {
     const TestContext = React.createContext<null | string>(null);
 
-    const mdxSource = await serialize("<Test />");
+    const mdxSource = await serialize({ source: "<Test />" });
+
+    if ("error" in mdxSource) throw mdxSource.error;
+
+    const components: MDXComponents = {
+      Test: () => (
+        <TestContext.Consumer>{(value) => <p>{value}</p>}</TestContext.Consumer>
+      ),
+    };
 
     const result = ReactDOMServer.renderToStaticMarkup(
       <TestContext.Provider value="provider-value">
-        <MDXRemote
-          {...mdxSource}
-          components={{
-            Test: () => (
-              <TestContext.Consumer>
-                {(value) => <p>{value}</p>}
-              </TestContext.Consumer>
-            ),
-          }}
-        />
+        <MDXClient {...mdxSource} components={components} />
       </TestContext.Provider>,
     );
 
@@ -81,15 +87,17 @@ describe("serialize", () => {
 
   // ******************************************
   test("with MDXProvider providing custom components", async () => {
-    const mdxSource = await serialize("<Test />");
+    const mdxSource = await serialize({ source: "<Test />" });
+
+    if ("error" in mdxSource) throw mdxSource.error;
+
+    const components: MDXComponents = {
+      Test: () => <p>Hello world</p>,
+    };
 
     const result = ReactDOMServer.renderToStaticMarkup(
-      <MDXProvider
-        components={{
-          Test: () => <p>Hello world</p>,
-        }}
-      >
-        <MDXRemote {...mdxSource} />
+      <MDXProvider components={components}>
+        <MDXClient {...mdxSource} />
       </MDXProvider>,
     );
 
@@ -98,15 +106,16 @@ describe("serialize", () => {
 
   // ******************************************
   test("supports component names with a .", async () => {
-    const mdxSource = await serialize("<motion.p />");
+    const mdxSource = await serialize({ source: "<motion.p />" });
+
+    if ("error" in mdxSource) throw mdxSource.error;
+
+    const components: MDXComponents = {
+      motion: { p: () => <p>Hello world</p> },
+    };
 
     const result = ReactDOMServer.renderToStaticMarkup(
-      <MDXRemote
-        {...mdxSource}
-        components={{
-          motion: { p: () => <p>Hello world</p> },
-        }}
-      />,
+      <MDXClient {...mdxSource} components={components} />,
     );
 
     expect(result).toMatchInlineSnapshot(`"<p>Hello world</p>"`);
@@ -114,7 +123,7 @@ describe("serialize", () => {
 
   // ******************************************
   test("strips imports & exports", async () => {
-    const input = dedent(`
+    const source = dedent(`
       import foo from 'bar';
 
       foo **bar**
@@ -122,46 +131,55 @@ describe("serialize", () => {
       export const bar = 'bar';
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({
+      source,
+      options: { disableImports: true },
+    });
 
     expect(result).toMatchInlineSnapshot(`"<p>foo <strong>bar</strong></p>"`);
   });
 
   // ******************************************
   test("fragments", async () => {
-    const components = {
+    const components: MDXComponents = {
       Test: ({ content }: { content: string }) => <>{content}</>,
     };
 
-    const result = await renderStatic(
-      `<Test content={<>Rendering a fragment</>} />`,
-      { components },
-    );
+    const result = await renderStatic({
+      source: `<Test content={<>Rendering a fragment</>} />`,
+      components,
+    });
+
     expect(result).toMatchInlineSnapshot(`"Rendering a fragment"`);
   });
 
   // ******************************************
   test("parses frontmatter - serialize result 1", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ---
       hello: world
       ---
       # Hello
     `);
 
-    const result = await serialize(input, {
-      parseFrontmatter: true,
+    const mdxSource = await serialize({
+      source,
+      options: {
+        parseFrontmatter: true,
+      },
     });
 
-    // Validating type correctness here, this should not error
-    expect(<MDXRemote {...result} />).toBeTruthy();
+    if ("error" in mdxSource) throw mdxSource.error;
 
-    expect(result.frontmatter.hello).toEqual("world");
+    // Validating type correctness here, this should not error
+    expect(<MDXClient {...mdxSource} />).toBeTruthy();
+
+    expect(mdxSource.frontmatter.hello).toEqual("world");
   });
 
   // ******************************************
   test("parses frontmatter - serialize result 2", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ---
       tags:
         - javascript
@@ -170,14 +188,17 @@ describe("serialize", () => {
       # Tags
     `);
 
-    const result = await serialize(input, {
-      parseFrontmatter: true,
+    const mdxSource = await serialize({
+      source,
+      options: { parseFrontmatter: true },
     });
 
-    // Validating type correctness here, this should not error
-    expect(<MDXRemote {...result} />).toBeTruthy();
+    if ("error" in mdxSource) throw mdxSource.error;
 
-    expect(result.frontmatter.tags).toEqual(["javascript", "html"]);
+    // Validating type correctness here, this should not error
+    expect(<MDXClient {...mdxSource} />).toBeTruthy();
+
+    expect(mdxSource.frontmatter.tags).toEqual(["javascript", "html"]);
   });
 
   test("parses frontmatter - serialize result - with type", async () => {
@@ -185,37 +206,42 @@ describe("serialize", () => {
       hello: string;
     };
 
-    const input = dedent(`
+    const source = dedent(`
       ---
       hello: world
       ---
       # Hello
     `);
 
-    const result = await serialize<Record<string, unknown>, Frontmatter>(
-      input,
-      {
+    const mdxSource = await serialize<Frontmatter>({
+      source,
+      options: {
         parseFrontmatter: true,
       },
-    );
+    });
+
+    if ("error" in mdxSource) throw mdxSource.error;
 
     // Validating type correctness here, this should not error
-    expect(<MDXRemote {...result} />).toBeTruthy();
+    expect(<MDXClient {...mdxSource} />).toBeTruthy();
 
-    expect(result.frontmatter.hello).toEqual("world");
+    expect(mdxSource.frontmatter.hello).toEqual("world");
   });
 
   // ******************************************
   test("parses frontmatter - rendered result", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ---
       hello: world
       ---
       Hi {frontmatter.hello}
     `);
 
-    const result = await renderStatic(input, {
-      parseFrontmatter: true,
+    const result = await renderStatic({
+      source,
+      options: {
+        parseFrontmatter: true,
+      },
     });
 
     expect(result).toMatchInlineSnapshot(`"<p>Hi world</p>"`);
@@ -224,7 +250,7 @@ describe("serialize", () => {
   // ******************************************
   test("prints helpful message from compile error", async () => {
     try {
-      await serialize("This is very bad <GITHUB_USER>");
+      await serialize({ source: "This is very bad <GITHUB_USER>" });
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`
         [Error: [next-mdx-remote] error compiling MDX:
@@ -239,20 +265,43 @@ describe("serialize", () => {
   });
 
   // ******************************************
+  test("provides internal error handling mechanism", async () => {
+    const mdxSource = await serialize({
+      source: "This is very bad <GITHUB_USER>",
+    });
+
+    if (!("error" in mdxSource)) throw new Error("should have a syntax error");
+
+    expect(mdxSource).toHaveProperty("error");
+
+    expect(mdxSource.error.message).toMatchInlineSnapshot(`
+      "[next-mdx-remote-client] error compiling MDX:
+      Expected a closing tag for \`<GITHUB_USER>\` (1:18-1:31) before the end of \`paragraph\`
+
+      > 1 | This is very bad <GITHUB_USER>
+          |                  ^
+
+      More information: https://mdxjs.com/docs/troubleshooting-mdx"
+    `);
+  });
+
+  // ******************************************
   test("supports VFile", async () => {
-    const result = await renderStatic(new VFile("foo **bar**"));
+    const result = await renderStatic({ source: new VFile("foo **bar**") });
+
     expect(result).toMatchInlineSnapshot(`"<p>foo <strong>bar</strong></p>"`);
   });
 
   // ******************************************
   test("supports Buffer", async () => {
-    const result = await renderStatic(Buffer.from("foo **bar**"));
+    const result = await renderStatic({ source: Buffer.from("foo **bar**") });
+
     expect(result).toMatchInlineSnapshot(`"<p>foo <strong>bar</strong></p>"`);
   });
 
   // ******************************************
   test("infers the type of the frontmatter", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ---
       title: The Title
       ---
@@ -263,14 +312,16 @@ describe("serialize", () => {
       title: string;
     };
 
-    const { frontmatter } = await serialize<
-      Record<string, unknown>,
-      Frontmatter
-    >(input, {
-      parseFrontmatter: true,
+    const mdxSource = await serialize<Frontmatter>({
+      source,
+      options: {
+        parseFrontmatter: true,
+      },
     });
 
-    expect(frontmatter).toHaveProperty("title");
-    expect(frontmatter).toEqual({ title: "The Title" });
+    if ("error" in mdxSource) throw mdxSource.error;
+
+    expect(mdxSource.frontmatter).toHaveProperty("title");
+    expect(mdxSource.frontmatter).toEqual({ title: "The Title" });
   });
 });

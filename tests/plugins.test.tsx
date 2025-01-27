@@ -12,7 +12,7 @@ import { renderStatic } from "./utils";
 describe("serialize - horizontal lines", () => {
   // ******************************************
   test("horizontal lines in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       <hr>
       <hr/>
       <hr />
@@ -21,7 +21,7 @@ describe("serialize - horizontal lines", () => {
       ___
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
 
     expect(result).toMatchInlineSnapshot(`
       "<hr/>
@@ -35,7 +35,7 @@ describe("serialize - horizontal lines", () => {
 
   // ******************************************
   test("horizontal lines in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       <hr/>
       <hr />
       <hr>
@@ -45,7 +45,10 @@ describe("serialize - horizontal lines", () => {
       ___
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
 
     expect(result).toMatchInlineSnapshot(`
       "<hr/>
@@ -61,13 +64,16 @@ describe("serialize - horizontal lines", () => {
 describe("serialize - breaklines", () => {
   // ******************************************
   test("breaklines in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       <br>
       <br/>
       <br />
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "mdx" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "mdx" } },
+    });
 
     expect(result).toMatchInlineSnapshot(`
       "<br/>
@@ -78,13 +84,16 @@ describe("serialize - breaklines", () => {
 
   // ******************************************
   test("breaklines in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       <br>
       <br/>
       <br />
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
 
     expect(result).toMatchInlineSnapshot(`
       "<br/>
@@ -97,7 +106,7 @@ describe("serialize - breaklines", () => {
 describe("serialize - smartypants & textr", () => {
   // ******************************************
   test("smartypants & textr in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       (c)   2023  (C)  2023 (r) (R) Company (tm) Company (TM)
 
       a +- b -+ c add factor -+d
@@ -133,7 +142,7 @@ describe("serialize - smartypants & textr", () => {
       dash (-), en dash (--), em dash (---), all types - -- ---
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
 
     expect(result).toMatchInlineSnapshot(`
       "<p>© 2023 © 2023 ® ® Company™ Company™</p>
@@ -158,7 +167,7 @@ describe("serialize - smartypants & textr", () => {
 
   // ******************************************
   test("smartypants & textr in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       (c)   2023  (C)  2023 (r) (R) Company (tm) Company (TM)
 
       a +- b -+ c add factor -+d
@@ -194,7 +203,10 @@ describe("serialize - smartypants & textr", () => {
       dash (-), en dash (--), em dash (---), all types - -- ---
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
 
     expect(result).toMatchInlineSnapshot(`
       "<p>© 2023 © 2023 ® ® Company™ Company™</p>
@@ -221,7 +233,7 @@ describe("serialize - smartypants & textr", () => {
 describe("serialize - superscript subscript", () => {
   // ******************************************
   test("superscript subscript in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       - 19^th^ H~2~O
       - H~2~O 19^th^
       
@@ -232,7 +244,7 @@ describe("serialize - superscript subscript", () => {
       ##### H~2~O 19^th^
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -267,7 +279,7 @@ describe("serialize - superscript subscript", () => {
 
   // ******************************************
   test("superscript subscript in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       - 19^th^ H~2~O
       - H~2~O 19^th^
       
@@ -278,7 +290,11 @@ describe("serialize - superscript subscript", () => {
       ##### H~2~O 19^th^
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -315,13 +331,13 @@ describe("serialize - superscript subscript", () => {
 describe("serialize - flexible paragraphs", () => {
   // ******************************************
   test("flexible paragraphs in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ~:w:> hello warning
       
       =:s> hello success
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -345,13 +361,17 @@ describe("serialize - flexible paragraphs", () => {
 
   // ******************************************
   test("flexible paragraphs in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ~:w:> hello warning
       
       =:s> hello success
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -375,7 +395,7 @@ describe("serialize - flexible paragraphs", () => {
 
   // ******************************************
   test("flexible paragraphs in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ~> hello
       ~|> hello
       ~:> hello
@@ -386,7 +406,7 @@ describe("serialize - flexible paragraphs", () => {
       =::> hello
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -436,7 +456,7 @@ describe("serialize - flexible paragraphs", () => {
 
   // ******************************************
   test("flexible paragraphs in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ~> hello
       ~|> hello
       ~:> hello
@@ -447,7 +467,11 @@ describe("serialize - flexible paragraphs", () => {
       =::> hello
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -499,12 +523,12 @@ describe("serialize - flexible paragraphs", () => {
 describe("serialize - flexible code titles", () => {
   // ******************************************
   test("flexible code titles (file name) in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       \`\`\`js:title.js
       \`\`\`
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -520,12 +544,16 @@ describe("serialize - flexible code titles", () => {
 
   // ******************************************
   test("flexible code titles (file name) in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       \`\`\`js:title.js
       \`\`\`
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -541,12 +569,12 @@ describe("serialize - flexible code titles", () => {
 
   // ******************************************
   test("flexible code titles (file path) in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       \`\`\`js:C:\\users\\documents
       \`\`\`
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -562,12 +590,16 @@ describe("serialize - flexible code titles", () => {
 
   // ******************************************
   test("flexible code titles (file path) in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       \`\`\`js:C:\\users\\documents
       \`\`\`
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -585,13 +617,13 @@ describe("serialize - flexible code titles", () => {
 describe("serialize - flexible containers", () => {
   // ******************************************
   test("flexible containers --> admonitions with title in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ::: warning title
       content
       :::
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -608,13 +640,17 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("flexible containers --> admonitions with title in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ::: warning title
       content
       :::
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -631,13 +667,13 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("flexible containers --> admonitions without title in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ::: danger
       content
       :::
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -654,13 +690,17 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("flexible containers --> admonitions without title in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ::: danger
       content
       :::
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -677,7 +717,7 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("flexible markers --> marked or highlighted texts in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       == ==
 
       ==marked text==
@@ -685,7 +725,7 @@ describe("serialize - flexible containers", () => {
       =r=marked text==
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -704,7 +744,7 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("flexible markers --> marked or highlighted texts in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
         == ==
 
         ==marked text==
@@ -712,7 +752,11 @@ describe("serialize - flexible containers", () => {
         =r=marked text==
       `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -731,7 +775,7 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("remark ins --> inserted texts in MDX", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ++ ++
 
       ++inserted text++
@@ -739,7 +783,7 @@ describe("serialize - flexible containers", () => {
       ++ inserted text ++
     `);
 
-    const result = await renderStatic(input);
+    const result = await renderStatic({ source });
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
@@ -756,7 +800,7 @@ describe("serialize - flexible containers", () => {
 
   // ******************************************
   test("remark ins --> inserted texts in markdown", async () => {
-    const input = dedent(`
+    const source = dedent(`
       ++ ++
 
       ++inserted text++
@@ -764,7 +808,11 @@ describe("serialize - flexible containers", () => {
       ++ inserted text ++
     `);
 
-    const result = await renderStatic(input, { mdxOptions: { format: "md" } });
+    const result = await renderStatic({
+      source,
+      options: { mdxOptions: { format: "md" } },
+    });
+
     const formattedResult = await prettier.format(result, { parser: "mdx" });
 
     expect(formattedResult).toMatchInlineSnapshot(`
