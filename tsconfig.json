@@ -1,18 +1,20 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["src/lib_archive"],
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "skipLibCheck": true,
+    "moduleResolution": "Node",
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
     "declaration": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
     "sourceMap": true,
-    "outDir": "dist",
-    "noImplicitReturns": true
-  }
+    "noImplicitReturns": true,
+    "noImplicitThis": false
+  },
+  "include": ["./src"]
 }
