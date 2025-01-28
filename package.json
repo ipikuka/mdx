@@ -1,6 +1,6 @@
 {
   "name": "@ipikuka/mdx",
-  "version": "2.0.2",
+  "version": "0.0.1",
   "description": "It is an opinionated wrapper for `next-mdx-remote-client`",
   "main": "./dist/csr.js",
   "types": "./dist/csr.d.ts",
