@@ -3,7 +3,7 @@ import ReactDOMServer from "react-dom/server";
 
 import { serialize, type SerializeProps } from "../../src/serialize.js";
 
-import { MDXClient, type MDXComponents } from "../../src/csr.js";
+import { MDXClient, type MDXComponents } from "../../src/index.js";
 
 export async function renderStatic({
   source,

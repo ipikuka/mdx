@@ -1,13 +1,13 @@
 {
   "name": "@ipikuka/mdx",
   "version": "1.0.0",
-  "description": "It is an opinionated wrapper for `next-mdx-remote-client`",
-  "main": "./dist/csr.js",
-  "types": "./dist/csr.d.ts",
+  "description": "An opinionated wrapper of `next-mdx-remote-client`",
+  "main": "./dist/csr/index.js",
+  "types": "./dist/csr/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/csr.js",
-    "./csr": "./dist/csr.js",
+    ".": "./dist/index.js",
+    "./csr": "./dist/index.js",
     "./serialize": "./dist/serialize.js",
     "./rsc": "./dist/rsc.js",
     "./utils": "./dist/utils.js"
@@ -15,13 +15,13 @@
   "typesVersions": {
     "*": {
       "csr": [
-        "./dist/csr.d.ts"
+        "./dist/index.d.ts"
       ],
       "serialize": [
-        "./dist/esm/serialize.d.ts"
+        "./dist/serialize.d.ts"
       ],
       "rsc": [
-        "./dist/esm/rsc.d.ts"
+        "./dist/rsc.d.ts"
       ],
       "utils": [
         "./dist/utils.d.ts"
@@ -29,20 +29,20 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint .",
+    "build": "rimraf dist && tsc --build",
+    "format": "npm run prettier && npm run lint",
     "prettier": "prettier --write .",
+    "lint": "eslint .",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs",
     "test:file": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs plugins.test.tsx",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run prettier && npm run lint",
-    "prebuild": "rimraf dist"
+    "prepublishOnly": "npm run test && npm run format"
   },
   "files": [
     "dist",
     "LICENSE",
     "README.md",
-    "global.d.ts"
+    "tsconfig.json"
   ],
   "repository": {
     "type": "git",
@@ -98,5 +98,8 @@
   "peerDependencies": {
     "react": ">= 18.3.0 < 19.0.0",
     "react-dom": ">= 18.3.0 < 19.0.0"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   }
 }

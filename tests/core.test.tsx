@@ -3,7 +3,7 @@ import ReactDOMServer from "react-dom/server";
 import { VFile } from "vfile";
 import dedent from "dedent";
 
-import { MDXClient, MDXProvider, type MDXComponents } from "../src/csr.js";
+import { MDXClient, MDXProvider, type MDXComponents } from "../src/index.js";
 import { serialize } from "../src/serialize.js";
 
 import { renderStatic } from "./utils";
