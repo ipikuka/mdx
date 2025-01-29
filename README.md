@@ -50,7 +50,11 @@ This package is peer dependant with `react`, `react-dom`; so it is assumed that 
 
 ### Example with `Next.js` pages router
 
-The **`@ipikuka/mdx`** provides a **`serialize`** function. The `serialize` function is an opinionated wrapper of the `serialize` function of the `next-mdx-remote-client` which is a set of light utilities allowing MDX to be loaded within `getStaticProps` or `gerServerSideProps` and hydrated correctly on the client. The `@ipikuka/mdx` provides also **`hydrate`** function and **`MDXClient`** component for "pages" router. See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-pages-router).
+The **`@ipikuka/mdx`** provides a **`serialize`** function. The `serialize` function is an opinionated wrapper of the `serialize` function of the `next-mdx-remote-client` which is a set of light utilities allowing MDX to be loaded within `getStaticProps` or `gerServerSideProps` and hydrated correctly on the client.
+
+The `@ipikuka/mdx` provides also **`hydrate`** function and **`MDXClient`** component for "pages" router.
+
+See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-pages-router).
 
 ```js
 import { serialize } from "@ipikuka/mdx/serialize";
@@ -60,6 +64,7 @@ import ErrorComponent from "../components/ErrorComponent";
 import { TableOfComponent, Test } from "../mdxComponents";
 
 const components = {
+  TableOfComponent,
   Test,
   wrapper: ({ children }) => <div className="mdx-wrapper">{children}</div>,
 };
@@ -79,10 +84,6 @@ title: My Article
 <TableOfComponent toc={toc} />
 
 Some **bold** and ==marked== text in MDX.
-
-\`\`\`js:Title.js showLineNumbers
-console.log("next-mdx-remote-client");
-\`\`\`
 
 ~|> Centered paragraph (thanks to remark-flexible-paragraphs)
 
@@ -104,7 +105,9 @@ The content of the tip (thanks to remark-flexible-containers)
 
 ### Example with `Next.js` app router
 
-The **`@ipikuka/mdx`** provides **`evaluate`** function and **`MDXRemote`** component for "app" router. See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-app-router).
+The **`@ipikuka/mdx`** provides **`evaluate`** function and **`MDXRemote`** component for "app" router.
+
+See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-app-router).
 
 ```js
 import { Suspense } from "react";
@@ -114,6 +117,7 @@ import { ErrorComponent, LoadingComponent } from "../components";
 import { TableOfComponent, Test } from "../mdxComponents";
 
 const components = {
+  TableOfComponent,
   Test,
   wrapper: ({ children }) => <div className="mdx-wrapper">{children}</div>,
 };
@@ -125,10 +129,6 @@ title: My Article
 <TableOfComponent toc={toc} />
 
 Some **bold** and ==marked== text in MDX.
-
-\`\`\`js:Title.js showLineNumbers
-console.log("next-mdx-remote-client");
-\`\`\`
 
 ~|> Centered paragraph (thanks to remark-flexible-paragraphs)
 
@@ -154,11 +154,15 @@ The content of the tip (thanks to remark-flexible-containers)
 
 ## Options
 
-`@ipikuka/mdx` has the same options with `next-mdx-remote-client` as a wrapper. See [next-mdx-remote-client][next-mdx-remote-client].
+**`@ipikuka/mdx`** has the same options with **`next-mdx-remote-client`** as a wrapper.
+
+See [next-mdx-remote-client][next-mdx-remote-client].
 
 ## Types
 
-This package is fully typed with [TypeScript][typescript-url] and exposes the same types as `next-mdx-remote-client` does.
+**`@ipikuka/mdx`** is fully typed with [TypeScript][typescript-url] and exposes the same types as **`next-mdx-remote-client`** does.
+
+See [next-mdx-remote-client][next-mdx-remote-client].
 
 ## Compatibility
 
