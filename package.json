@@ -1,6 +1,6 @@
 {
   "name": "@ipikuka/mdx",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "An opinionated wrapper of `next-mdx-remote-client`",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
