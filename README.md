@@ -6,7 +6,7 @@
 [![typescript][badge-typescript]][typescript-url]
 [![License][badge-license]][github-license-url]
 
-This package is **an opinionated wrapper** of **[next-mdx-remote-client][next-mdx-remote-client]**.
+This package is **an opinionated wrapper** of **[next-mdx-remote-client][next-mdx-remote-client]**. Since it is peer dependent to `next-mdx-remote-client` you need to install `next-mdx-remote-client` as well.
 
 ## When should I use this?
 
@@ -35,18 +35,30 @@ Thanks to `@ipikuka/plugins`, the markdown content or MDX content will support:
 This package is suitable for ESM module only. In Node.js (16.0+), install with npm:
 
 ```bash
-npm install @ipikuka/mdx
+npm install @ipikuka/mdx next-mdx-remote-client
+
+# if you are using react@19 specifically
+npm install @ipikuka/mdx next-mdx-remote-client@2
+
+# if you are using react@18 specifically
+npm install @ipikuka/mdx next-mdx-remote-client@1
 ```
 
 or
 
 ```bash
-yarn add @ipikuka/mdx
+yarn add @ipikuka/mdx next-mdx-remote-client
+
+# if you are using react@19 specifically
+yarn add @ipikuka/mdx next-mdx-remote-client@2
+
+# if you are using react@18 specifically
+yarn add @ipikuka/mdx next-mdx-remote-client@1
 ```
 
 ## Usage
 
-This package is peer dependant with `react`, `react-dom`; so it is assumed that you have already installed.
+This package is peer dependant with `react`, `react-dom` and `next-mdx-remote-client` so it is assumed that you have already installed them.
 
 ### Example with `Next.js` pages router
 
