@@ -21,7 +21,6 @@ export type {
   MDXContent,
   MDXProps,
   MDXModule,
-  Element,
 } from "next-mdx-remote-client";
 
 export type { TocItem } from "@ipikuka/plugins";
