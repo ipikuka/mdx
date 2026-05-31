@@ -29,14 +29,16 @@
     }
   },
   "scripts": {
-    "build": "rimraf dist && tsc --build",
+    "build": "rimraf dist && tsc --build tsconfig.build.json && type-coverage",
     "format": "npm run prettier && npm run lint",
     "prettier": "prettier --write .",
     "lint": "eslint .",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs",
-    "test:file": "NODE_OPTIONS=--experimental-vm-modules jest --config ./jest.config.cjs plugins.test.tsx",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run test && npm run format"
+    "test": "vitest --watch=false",
+    "test:watch": "vitest",
+    "test:file": "vitest plugins.nmr.spec.tsx --watch=false",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run test && npm run format && npm run test-coverage",
+    "test-coverage": "vitest run --coverage"
   },
   "files": [
     "dist",
