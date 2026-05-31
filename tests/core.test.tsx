@@ -7,7 +7,7 @@ import dedent from "dedent";
 import { MDXClient, MDXProvider, type MDXComponents } from "../src/index.js";
 import { serialize } from "../src/serialize.js";
 
-import { renderStatic } from "./utils";
+import { renderStatic } from "./utils/index.js";
 
 /**
  *
