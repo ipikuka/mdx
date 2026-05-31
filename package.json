@@ -70,7 +70,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ipikuka/plugins": "^1.0.2"
+    "@ipikuka/plugins": "^2.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -96,7 +96,7 @@
     "vitest": "^4.1.7"
   },
   "peerDependencies": {
-    "next-mdx-remote-client": "^1.0.0 || ^2.0.0",
+    "next-mdx-remote-client": "^1.1.8",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
