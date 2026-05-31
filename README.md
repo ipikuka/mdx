@@ -191,10 +191,6 @@ This package has the same security concerns with **[next-mdx-remote-client][next
 
 [MIT License](./LICENSE) © ipikuka
 
-### Keywords
-
-🟩 [unified][unifiednpm] 🟩 [@mdx-js/mdx][mdx-jsnpm] 🟩 [next-mdx-remote-client][next-mdx-remote-client] 🟩 [@ipikuka/plugins][ipikukapluginsnpm] 🟩 [markdown][markdownnpm] 🟩 [mdx][mdxnpm]
-
 [unifiednpm]: https://www.npmjs.com/search?q=keywords:unified
 [mdx-jsnpm]: https://www.npmjs.com/package/@mdx-js/mdx
 [next-mdx-remote-client]: https://github.com/ipikuka/next-mdx-remote-client
