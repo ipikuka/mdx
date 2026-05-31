@@ -1,9 +1,9 @@
-node_modules
-dist
 .DS_Store
-package-lock.json
-steps.md
-notes.md
 .vscode
-src/lib_archive
+archive
+coverage
+dist
+node_modules
+package-lock.json
 README.md
+tsconfig.build.tsbuildinfo
