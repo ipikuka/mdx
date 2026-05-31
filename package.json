@@ -85,7 +85,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "globals": "^17.6.0",
-    "npm": "^11.16.0",
     "prettier": "^3.8.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -93,12 +92,11 @@
     "type-coverage": "^2.29.7",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.60.0",
-    "un": "^0.0.0",
     "vfile": "^6.0.3",
     "vitest": "^4.1.7"
   },
   "peerDependencies": {
-    "next-mdx-remote-client": "^1.1.8",
+    "next-mdx-remote-client": "^1.0.0 || ^2.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
