@@ -5,6 +5,7 @@ import type {
   SerializeOptions,
 } from "next-mdx-remote-client/serialize";
 
+import handlers from "@ipikuka/handlers";
 import { plugins, prepare, type TocItem } from "@ipikuka/plugins";
 
 export type { SerializeResult, SerializeProps, SerializeOptions, TocItem };
@@ -35,6 +36,13 @@ export async function serialize<
       mdxOptions: {
         ...mdxOptions,
         ...plugins({ format }),
+        remarkRehypeOptions: {
+          ...mdxOptions?.remarkRehypeOptions,
+          handlers: {
+            ...handlers({ format }),
+            ...mdxOptions?.remarkRehypeOptions?.handlers,
+          },
+        },
       },
       vfileDataIntoScope: "toc",
       ...rest,

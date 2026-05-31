@@ -1,10 +1,6 @@
 import React from "react";
 import { evaluate as evaluate_ } from "next-mdx-remote-client/rsc";
-import type {
-  EvaluateProps,
-  EvaluateResult,
-  MDXRemoteProps,
-} from "next-mdx-remote-client/rsc";
+import type { EvaluateProps, EvaluateResult, MDXRemoteProps } from "next-mdx-remote-client/rsc";
 
 export type {
   MDXRemoteProps,
@@ -18,7 +14,9 @@ export type {
   MDXModule,
 } from "next-mdx-remote-client/rsc";
 
+import handlers from "@ipikuka/handlers";
 import { plugins, prepare, type TocItem } from "@ipikuka/plugins";
+
 export type { TocItem } from "@ipikuka/plugins";
 
 /**
@@ -33,9 +31,7 @@ export async function evaluate<
   source,
   options = {},
   components = {},
-}: EvaluateProps<TScope>): Promise<
-  EvaluateResult<TFrontmatter, TScope & { toc?: TocItem[] }>
-> {
+}: EvaluateProps<TScope>): Promise<EvaluateResult<TFrontmatter, TScope & { toc?: TocItem[] }>> {
   const { mdxOptions, ...rest } = options || {};
 
   const format_ = mdxOptions?.format;
@@ -48,6 +44,13 @@ export async function evaluate<
       mdxOptions: {
         ...mdxOptions,
         ...plugins({ format }),
+        remarkRehypeOptions: {
+          ...mdxOptions?.remarkRehypeOptions,
+          handlers: {
+            ...handlers({ format }),
+            ...mdxOptions?.remarkRehypeOptions?.handlers,
+          },
+        },
       },
       vfileDataIntoScope: "toc",
       ...rest,
@@ -61,9 +64,7 @@ export async function evaluate<
  * MDXRemote which uses opinionated wrapper evalute for "next-mdx-remote/rsc"
  *
  */
-export async function MDXRemote(
-  props: MDXRemoteProps,
-): Promise<React.JSX.Element> {
+export async function MDXRemote(props: MDXRemoteProps): Promise<React.JSX.Element> {
   const { onError: ErrorComponent, ...rest } = props;
 
   const { content, error } = await evaluate(rest);
