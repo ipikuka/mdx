@@ -4,9 +4,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "strict": true,
     "jsx": "react-jsx",
     "allowJs": true,
-    "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "declaration": true,
@@ -17,5 +17,5 @@
     "noImplicitReturns": true,
     "noImplicitThis": false
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
