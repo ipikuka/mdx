@@ -1,0 +1,56 @@
+// @ts-check
+import { defineConfig } from "eslint/config";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import globals from "globals";
+import vitest from "@vitest/eslint-plugin";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+
+export default defineConfig(
+  {
+    ignores: [
+      ".DS_Store",
+      ".vscode/",
+      "archive/",
+      "coverage/",
+      "dist/",
+      "node_modules/",
+      "package-lock.json",
+      "tsconfig.build.tsbuildinfo",
+    ],
+  },
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "no-irregular-whitespace": "off",
+    },
+  },
+  {
+    name: "javascript",
+    files: ["**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        { allowShortCircuit: true, allowTernary: true },
+      ],
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  {
+    files: ["**/*.js"],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    files: ["tests/**/*.spec.ts"],
+    ...vitest.configs.recommended,
+  },
+  eslintPluginPrettierRecommended,
+);
