@@ -1,3 +1,4 @@
+import { describe, test, expect } from "vitest";
 import * as React from "react";
 import ReactDOMServer from "react-dom/server";
 import { VFile } from "vfile";
@@ -31,18 +32,14 @@ describe("serialize", () => {
       },
     });
 
-    expect(result).toMatchInlineSnapshot(
-      `"<p>foo <span>hello test</span></p>"`,
-    );
+    expect(result).toMatchInlineSnapshot(`"<p>foo <span>hello test</span></p>"`);
   });
 
   // ******************************************
   test("flexible paragraphs", async () => {
     const result = await renderStatic({ source: "~> hello" });
 
-    expect(result).toMatchInlineSnapshot(
-      `"<p class="flexible-paragraph">hello</p>"`,
-    );
+    expect(result).toMatchInlineSnapshot(`"<p class="flexible-paragraph">hello</p>"`);
   });
 
   // ******************************************
@@ -71,9 +68,7 @@ describe("serialize", () => {
     if ("error" in mdxSource) throw mdxSource.error;
 
     const components: MDXComponents = {
-      Test: () => (
-        <TestContext.Consumer>{(value) => <p>{value}</p>}</TestContext.Consumer>
-      ),
+      Test: () => <TestContext.Consumer>{(value) => <p>{value}</p>}</TestContext.Consumer>,
     };
 
     const result = ReactDOMServer.renderToStaticMarkup(
