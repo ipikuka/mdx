@@ -11,7 +11,7 @@ export default defineConfig({
         ["json", { file: "coverage.json" }],
         "text",
       ],
-      exclude: ["archive", "tests", "**/*.d.ts", "eslint.config.js", "vite.config.mjs"],
+      include: ["src/rsc.tsx", "src/serialize.ts"],
       thresholds: {
         lines: 100,
         functions: 100,

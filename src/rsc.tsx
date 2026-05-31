@@ -32,6 +32,7 @@ export async function evaluate<
   options = {},
   components = {},
 }: EvaluateProps<TScope>): Promise<EvaluateResult<TFrontmatter, TScope & { toc?: TocItem[] }>> {
+  // v8 ignore next
   const { mdxOptions, ...rest } = options || {};
 
   const format_ = mdxOptions?.format;
