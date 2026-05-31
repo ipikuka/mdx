@@ -70,6 +70,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@ipikuka/handlers": "^1.0.2",
     "@ipikuka/plugins": "^2.0.3"
   },
   "devDependencies": {

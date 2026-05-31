@@ -10,13 +10,13 @@ This package is **an opinionated wrapper** of **[next-mdx-remote-client][next-md
 
 ## When should I use this?
 
-The **`@ipikuka/mdx`** is battery-included. You don't need to add any remark, rehype, remark plugins because I included them already according to my expertise. If you need to add a plugin let me know opening an issue.
+**`@ipikuka/mdx`** is battery-included. You don't need to add any remark, rehype, remark plugins because I included them already according to my expertise. If you need to add a plugin let me know opening an issue.
 
-The **plugins** used in the **`@ipikuka/mdx`** comes from [**`@ipikuka/plugins`**](https://github.com/ipikuka/plugins/).
+The **plugins** used in **`@ipikuka/mdx`** comes from [**`@ipikuka/plugins`**](https://github.com/ipikuka/plugins/) which provides **`remarkPlugins`**, **`rehypePlugins`**, **`recmaPlugins`**.
 
-**`@ipikuka/plugins`** provides **`remarkPlugins`**, **`rehypePlugins`**, **`recmaPlugins`**, and **`remarkRehypeOptions`**.
+The **rehype handlers** used in **`@ipikuka/mdx`** comes from [**`@ipikuka/handlers`**](https://github.com/ipikuka/handlers/) which provides **`remarkRehypeOptions["handlers"]`**.
 
-Thanks to `@ipikuka/plugins`, the markdown content or MDX content will support:
+Thanks to **`@ipikuka/plugins`** and **`@ipikuka/handlers`**, markdown/MDX content will support:
 + **bold texts**, **italic texts**,
 + **lists**, **blockquotes**, **headings**,
 + **table of contents (TOC)**,
@@ -24,10 +24,13 @@ Thanks to `@ipikuka/plugins`, the markdown content or MDX content will support:
 + **marked texts**, **inserted texts**,
 + **centered paragraphs**, **aligned paragraphs**,
 + **guillements**, 
-+ **gfm syntax** (tables, strikethrough, task lists, autolinks etc.),
++ **gfm syntax** (tables, strikethrough, task lists, autolinks, footnotes etc.),
 + **highlighted and numbered code fences**,
 + **code titles**,
 + **autolink for headers**,
++ **abbreviations**,
++ **inline footnotes**,
++ **enhanced markdown image syntax**,
 + **definition lists** etc. and many more.
 
 ## Installation
@@ -62,11 +65,11 @@ This package is peer dependant with `react`, `react-dom` and `next-mdx-remote-cl
 
 ### Example with `Next.js` pages router
 
-The **`@ipikuka/mdx`** provides a **`serialize`** function. The `serialize` function is an opinionated wrapper of the `serialize` function of the `next-mdx-remote-client` which is a set of light utilities allowing MDX to be loaded within `getStaticProps` or `gerServerSideProps` and hydrated correctly on the client.
+**`@ipikuka/mdx`** provides a **`serialize`** function. The `serialize` function is an opinionated wrapper of the `serialize` function of the **`next-mdx-remote-client`** which is a set of light utilities allowing MDX to be loaded within `getStaticProps` or `gerServerSideProps` and hydrated correctly on the client.
 
-The `@ipikuka/mdx` provides also **`hydrate`** function and **`MDXClient`** component for "pages" router.
+**`@ipikuka/mdx`** provides also **`hydrate`** function and **`MDXClient`** component for "pages" router.
 
-See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-pages-router).
+See for more details about [**`next-mdx-remote-client`**](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-pages-router).
 
 ```js
 import { serialize } from "@ipikuka/mdx/serialize";
@@ -119,7 +122,7 @@ The content of the tip (thanks to remark-flexible-containers)
 
 The **`@ipikuka/mdx`** provides **`evaluate`** function and **`MDXRemote`** component for "app" router.
 
-See for more details about `next-mdx-remote-client` at [here](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-app-router).
+See for more details about [**`next-mdx-remote-client`**](https://github.com/ipikuka/next-mdx-remote-client?tab=readme-ov-file#the-part-associated-with-nextjs-app-router).
 
 ```js
 import { Suspense } from "react";
@@ -178,11 +181,11 @@ See [next-mdx-remote-client][next-mdx-remote-client].
 
 ## Compatibility
 
-It is a `Nextjs` compatible package.
+It is a **`Nextjs`** compatible package.
 
 ## Security
 
-This package has the same security concerns with [next-mdx-remote-client][next-mdx-remote-client].
+This package has the same security concerns with **[next-mdx-remote-client][next-mdx-remote-client]**.
 
 ## License
 
