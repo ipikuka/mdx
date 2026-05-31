@@ -1,5 +1,12 @@
 # @ipikuka/mdx
 
+**A robust Next.js newsletter `Next.js Weekly` is sponsoring me** 💖
+[![NextjsWeekly banner](./assets/next-js-weekly.png)](https://nextjsweekly.com/)
+
+A warm thanks 🙌 to [@ErfanEbrahimnia](https://github.com/ErfanEbrahimnia), [@recepkyk](https://github.com/recepkyk), and [@LSeaburg](https://github.com/LSeaburg) for the [support](https://github.com/sponsors/ipikuka) 💖
+
+---
+
 [![npm version][badge-npm-version]][url-npm-package]
 [![npm downloads][badge-npm-download]][url-npm-package]
 [![publish to npm][badge-publish-to-npm]][url-publish-github-actions]
@@ -188,6 +195,14 @@ It is a **`Nextjs`** compatible package.
 ## Security
 
 This package has the same security concerns with **[next-mdx-remote-client][next-mdx-remote-client]**.
+
+## Support My Work ([become a sponsor](https://github.com/sponsors/ipikuka) 🚀)
+
+If you find **`@ipikuka/plugins`** or any of my projects is useful and helpful, please consider supporting my work. Your sponsorship means a lot to me and keeps these projects alive and updated! 💖
+
+My sponsors are going to be featured at the very top of the page and proudly displayed on my [Sponsor Wall](https://github.com/sponsors/ipikuka).
+
+Thank you for supporting open source! 🙌
 
 ## License
 
