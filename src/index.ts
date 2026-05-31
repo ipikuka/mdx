@@ -3,7 +3,6 @@ export {
   hydrateLazy,
   MDXClient,
   MDXClientLazy,
-  // below from "@mdx-js/react"
   MDXProvider,
   useMDXComponents,
 } from "next-mdx-remote-client";
@@ -13,10 +12,6 @@ export type {
   HydrateResult,
   MDXClientProps,
   SerializeResult,
-  // below are experimantal
-  HydrateAsyncProps,
-  HydrateAsyncOptions,
-  // below from "mdx/types"
   MDXComponents,
   MDXContent,
   MDXProps,

@@ -7,7 +7,6 @@
     "strict": true,
     "jsx": "react-jsx",
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
